@@ -2,27 +2,24 @@ import numpy as np
 
 
 def activeDisplacement(BC, K, F):
-    '''
+    """
         Take Boundary conditions, global stiffness matrix and forces. return active displacements, {Ua}.
 
         Parameters
         ----------
         BC : list
             Boundary conditions.
-        K : numpy array
+        K : ndarray
             Global stiffness matrix.
         F : list
             External forces of truss.
 
         Returns
         -------
-        Ua : numpy array
+        Ua : ndarray
             Active (Unconstrained) displacements matrix, {Ua}.
-    '''
-    # BCnew1 = [x[0]*2-1 for x in BC]
-    # BCnew2 = [x[0]*2-2 for x in BC]
-    # BCnew = BCnew1 + BCnew2
-    # BCnew.sort()
+    """
+
     BCnew = [(x[0]-1)*2+x[1]-1 for x in BC]
     BCval = [x[2] for x in BC]
     Fnew = np.zeros(K.shape[0])
@@ -35,11 +32,7 @@ def activeDisplacement(BC, K, F):
     Ft = np.delete(Fnew, BCnew)
     Knew = np.delete(K, BCnew, axis=0)
     Knew = np.delete(Knew, BCnew, axis=1)
-    # Fnew = []
-    # for i in F:
-    #     Fnew.append(i[1])
-    #     Fnew.append(i[2])
-    # Ft = np.array(Fnew)
+
 
     Ua = np.linalg.solve(Knew, Ft)
     return Ua

@@ -6,7 +6,7 @@ from math import cos
 
 def LenCalc(Coord, ElmCon):
     """
-
+        Calculate the lengths of bar elements.
 
     Parameters
     ----------
@@ -34,7 +34,7 @@ def LenCalc(Coord, ElmCon):
 
 
 def dataframe(ElmC, A, E, L, theta):
-    '''
+    """
         Take each element's connectivity, cross section area, elastic modulus, length and direction,
         return a pandas dataframe containing geometry definition of the problem.
 
@@ -60,7 +60,8 @@ def dataframe(ElmC, A, E, L, theta):
         -------
         df : pandas dataframe
             Geometry definition of the problem.
-    '''
+    """
+    
     d = {'#': list(range(1, len(ElmC)+1)), 'Connectivity': ElmC, 'Length': L, 'Cross section area': A, 'Young\'s modulus': E,
          'Direction (Rad)': theta}
     df = pd.DataFrame(data=d)
@@ -68,7 +69,7 @@ def dataframe(ElmC, A, E, L, theta):
 
 
 def ElmStf(df):
-    '''
+    """
         Take problem's dataframe and add a column containing each element's
         stiffness matrix.
 
@@ -81,7 +82,7 @@ def ElmStf(df):
         -------
         df : pandas dataframe
             With element stiffness matrices added to it.
-    '''
+    """
     ke = []
     for i in df.index:
         k = df.iloc[i, 4] * df.iloc[i, 3] / df.iloc[i, 2]
@@ -101,7 +102,7 @@ def ElmStf(df):
 
 
 def TotStf(df):
-    '''
+    """
         Take problem's dataframe and return global stiffness matrix.
 
         Parameters
@@ -111,9 +112,9 @@ def TotStf(df):
 
         Returns
         -------
-        K : numpy array
+        K : ndarray
             Global stiffness matrix.
-    '''
+    """
     nd = max(df['Connectivity'].max())
     K = np.zeros((2*nd, 2*nd))
     for num in df.index:
@@ -140,7 +141,7 @@ def TotStf(df):
 
 def TrussWeight(A, L, density):
     """
-    Calculate truss weight.
+        Calculate truss weight.
 
     Parameters
     ----------
@@ -148,8 +149,8 @@ def TrussWeight(A, L, density):
         A list of elements cross-sections.
     L : list
         A list of elements weights.
-    density : float, optional
-        Material density. The default is 1.0 .
+    density : list
+        Material density.
 
     Returns
     -------
