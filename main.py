@@ -62,14 +62,16 @@ def Run(Coord, ElmCon, A, E, theta, BC, F):
 
 def validation():
     
-    Coord, ElmCon, A, E, theta, BC, F = Inp.Coord, Inp.ElmCon, Inp.A, Inp.E, Inp.theta, Inp.BC, Inp.F
+    Coord, ElmCon, A, E, BC, F = Inp.Coord, Inp.ElmCon, Inp.A, Inp.E, Inp.BC, Inp.F
     Post.ShowTruss(Coord, ElmCon)
+    theta = Pre.angCalc(Coord, ElmCon)
     U, ansdf = Run(Coord, ElmCon, A, E, theta, BC, F)
     Post.ShowDeformedTruss(Coord, ElmCon, U)
     
     return U
 # %% 10-bar planar truss:
-Coord, ElmCon, E, theta, BC, F = Inp.Coord, Inp.ElmCon, Inp.E, Inp.theta, Inp.BC, Inp.F
+Coord, ElmCon, E, BC, F = Inp.Coord, Inp.ElmCon, Inp.E, Inp.BC, Inp.F
+theta = Pre.angCalc(Coord, ElmCon)
 density, Length = Inp.density, Pre.LenCalc(Coord, ElmCon)
 
 nd = 10
@@ -95,10 +97,10 @@ def Weight(A, rho=density, L=Length):
 nPar = 200
 fitlist = []
 
-for i in range(200):
+for i in range(50):
     fitness = GA.fitCal(Weight, A)
     print(i)
-    print("Best fitness = %f" % max(fitness))
+    print("Best fitness = %f" % -max(fitness))
     fitlist.append(max(fitness))
     parents = GA.parSelRWS(A, fitness, nPar, rechoose=True)
     children = np.array(list(map(

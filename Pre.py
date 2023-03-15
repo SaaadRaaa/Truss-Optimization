@@ -1,7 +1,6 @@
 import numpy as np
 import pandas as pd
-from math import sin
-from math import cos
+from math import sin, cos, pi, atan
 
 
 def LenCalc(Coord, ElmCon):
@@ -32,6 +31,39 @@ def LenCalc(Coord, ElmCon):
 
     return L
 
+def angCalc(Coord, ElmCon):
+    """
+        Calculate the orientations of bar elements.
+
+    Parameters
+    ----------
+    Coord : list
+        Nodal coordrindates. Each item is a tuple of (x,y)
+        coordinates of nodes.
+    ElmCon : list
+        Element connectivity table. Each item is a tuple
+        that contains first and second node number of bar.
+
+    Returns
+    -------
+    angs : list
+        Element direction table. Each item represents the angle between the bar and
+        the global X axis in radians. indices match with ElmCon.
+
+    """
+    
+    angs = list()
+    for elem in ElmCon:
+        n1 = Coord[elem[0]-1]
+        n2 = Coord[elem[1]-1]
+        if n1[0] == n2[0]:
+            angs.append(pi/2)
+        elif n1[1] == n2[1]:
+            angs.append(0)
+        else:
+            angs.append(atan((n2[1]-n1[1])/(n2[0]-n1[0])))
+    
+    return angs
 
 def dataframe(ElmC, A, E, L, theta):
     """

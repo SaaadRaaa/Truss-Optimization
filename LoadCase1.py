@@ -13,8 +13,6 @@ ElasMod = 10**7
 E = [ElasMod, ElasMod, ElasMod, ElasMod, ElasMod,
      ElasMod, ElasMod, ElasMod, ElasMod, ElasMod]
 
-theta = [0, pi/4, -pi/4, 0, pi/2, 0, pi/4, -pi/4, 0, pi/2]
-
 # [number of node, DoF(1 or 2), value]
 BC = [[1, 1, 0], [1, 2, 0], [2, 1, 0], [2, 2, 0]]
 
