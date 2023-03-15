@@ -2,7 +2,7 @@
 import matplotlib.pyplot as plt
 import myGenetic as GA
 import numpy as np
-import LoadCase11 as Inp
+import LoadCase1 as Inp
 import Pre
 import Sol
 import Post
@@ -12,6 +12,39 @@ START = time.time()
 
 
 def Run(Coord, ElmCon, A, E, theta, BC, F):
+    """
+    Perform finite element analysis of truss.
+
+    Parameters
+    ----------
+    Coord : list
+        Nodal coordrindates. Each item is a tuple of (x,y)
+        coordinates of nodes.
+    ElmCon : list
+        Element connectivity table. Each item is a tuple
+        that contains first and second node number of bar.
+    A : list
+        Element cross section area table. Each item represents the cross section area
+        of bar. indices match with ElmCon.
+    E : list
+        Element elastic modulus table. Each item represents the elastic modulus
+        of bar. indices match with ElmCon.
+    theta : list
+        Element direction table. Each item represents the angle between the bar and
+        the global X axis in radians. indices match with ElmCon.
+    BC : list
+        Boundary conditions.
+    F : list
+        External forces of truss.
+
+    Returns
+    -------
+    U : ndarray
+        Nodal displacements, {U}.
+    df : pandas dataframe
+        Geometry definition of the problem.
+
+    """
 
     L = Pre.LenCalc(Coord, ElmCon)
     df = Pre.dataframe(ElmCon, A, E, L, theta)
@@ -27,11 +60,14 @@ def Run(Coord, ElmCon, A, E, theta, BC, F):
     return U, df
 # %% [2] Run an example:
 
-
-Coord, ElmCon, A, E, theta, BC, F = Inp.Coord, Inp.ElmCon, Inp.A, Inp.E, Inp.theta, Inp.BC, Inp.F
-Post.ShowTruss(Coord, ElmCon)
-U, ansdf = Run(Coord, ElmCon, A, E, theta, BC, F)
-Post.ShowDeformedTruss(Coord, ElmCon, U)
+def validation():
+    
+    Coord, ElmCon, A, E, theta, BC, F = Inp.Coord, Inp.ElmCon, Inp.A, Inp.E, Inp.theta, Inp.BC, Inp.F
+    Post.ShowTruss(Coord, ElmCon)
+    U, ansdf = Run(Coord, ElmCon, A, E, theta, BC, F)
+    Post.ShowDeformedTruss(Coord, ElmCon, U)
+    
+    return U
 # %% 10-bar planar truss:
 Coord, ElmCon, E, theta, BC, F = Inp.Coord, Inp.ElmCon, Inp.E, Inp.theta, Inp.BC, Inp.F
 density, Length = Inp.density, Pre.LenCalc(Coord, ElmCon)
@@ -59,7 +95,7 @@ def Weight(A, rho=density, L=Length):
 nPar = 200
 fitlist = []
 
-for i in range(50):
+for i in range(200):
     fitness = GA.fitCal(Weight, A)
     print(i)
     print("Best fitness = %f" % max(fitness))
@@ -67,7 +103,7 @@ for i in range(50):
     parents = GA.parSelRWS(A, fitness, nPar, rechoose=True)
     children = np.array(list(map(
         GA.combConWHA, parents[0:nPar//2, :], parents[nPar//2:nPar, :]))).reshape((nPar, nd))
-    np.apply_along_axis(GA.mutConUni, 1, children, 0.09, 35.0, 0.1)
+    np.apply_along_axis(GA.mutConUni, 1, children, 0.09, 35.0, 0.2)
     A = GA.surSelRep(A, children, fitness, GA.fitCal(
         Weight, children), dup=True)
 
@@ -78,5 +114,6 @@ print(A[np.argsort(list(map(abs, GA.fitCal(Weight, A))))][:3])
 print(np.sort(list(map(abs, GA.fitCal(Weight, A))))[0:3])
 
 
+Post.ShowTrussCross(Coord, ElmCon, A[np.argsort(list(map(abs, GA.fitCal(Weight, A))))][0])
 plt.figure()
 plt.plot(fitlist)
