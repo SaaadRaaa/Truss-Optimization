@@ -5,7 +5,7 @@ from math import sin, cos, pi, atan
 
 def LenCalc(Coord, ElmCon):
     """
-        Calculate the lengths of bar elements.
+    Calculate the lengths of bar elements.
 
     Parameters
     ----------
@@ -21,7 +21,6 @@ def LenCalc(Coord, ElmCon):
     L : list
         Element length table. Each item represents the length
         of bar. indices match with ElmC.
-
     """
     L = list()
     for elem in ElmCon:
@@ -31,9 +30,10 @@ def LenCalc(Coord, ElmCon):
 
     return L
 
+
 def angCalc(Coord, ElmCon):
     """
-        Calculate the orientations of bar elements.
+    Calculate the orientations of bar elements.
 
     Parameters
     ----------
@@ -51,7 +51,7 @@ def angCalc(Coord, ElmCon):
         the global X axis in radians. indices match with ElmCon.
 
     """
-    
+
     angs = list()
     for elem in ElmCon:
         n1 = Coord[elem[0]-1]
@@ -62,38 +62,39 @@ def angCalc(Coord, ElmCon):
             angs.append(0)
         else:
             angs.append(atan((n2[1]-n1[1])/(n2[0]-n1[0])))
-    
+
     return angs
+
 
 def dataframe(ElmC, A, E, L, theta):
     """
-        Take each element's connectivity, cross section area, elastic modulus, length and direction,
-        return a pandas dataframe containing geometry definition of the problem.
+    Take each element's connectivity, cross section area, elastic modulus, length and direction,
+    return a pandas dataframe containing geometry definition of the problem.
 
-        Parameters
-        ----------
-        ElmC : list
-            Element connectivity table. Each item is a tuple
-            that contains first and second node number of bar.
-        A : list
-            Element cross section area table. Each item represents the cross section area
-            of bar. indices match with ElmC.
-        E : list
-            Element elastic modulus table. Each item represents the elastic modulus
-            of bar. indices match with ElmC.
-        L : list
-            Element length table. Each item represents the length
-            of bar. indices match with ElmC.
-        theta : list
-            Element direction table. Each item represents the angle between the bar and
-            the global X axis in radians. indices match with ElmC.
+    Parameters
+    ----------
+    ElmC : list
+        Element connectivity table. Each item is a tuple
+        that contains first and second node number of bar.
+    A : list
+        Element cross section area table. Each item represents the cross section area
+        of bar. indices match with ElmC.
+    E : list
+        Element elastic modulus table. Each item represents the elastic modulus
+        of bar. indices match with ElmC.
+    L : list
+        Element length table. Each item represents the length
+        of bar. indices match with ElmC.
+    theta : list
+        Element direction table. Each item represents the angle between the bar and
+        the global X axis in radians. indices match with ElmC.
 
-        Returns
-        -------
-        df : pandas dataframe
-            Geometry definition of the problem.
+    Returns
+    -------
+    df : pandas dataframe
+        Geometry definition of the problem.
     """
-    
+
     d = {'#': list(range(1, len(ElmC)+1)), 'Connectivity': ElmC, 'Length': L, 'Cross section area': A, 'Young\'s modulus': E,
          'Direction (Rad)': theta}
     df = pd.DataFrame(data=d)
@@ -102,18 +103,18 @@ def dataframe(ElmC, A, E, L, theta):
 
 def ElmStf(df):
     """
-        Take problem's dataframe and add a column containing each element's
-        stiffness matrix.
+    Take problem's dataframe and add a column containing each element's
+    stiffness matrix.
 
-        Parameters
-        ----------
-        df : pandas dataframe
-            Geometry definition of the problem.
+    Parameters
+    ----------
+    df : pandas dataframe
+        Geometry definition of the problem.
 
-        Returns
-        -------
-        df : pandas dataframe
-            With element stiffness matrices added to it.
+    Returns
+    -------
+    df : pandas dataframe
+        With element stiffness matrices added to it.
     """
     ke = []
     for i in df.index:
@@ -135,17 +136,17 @@ def ElmStf(df):
 
 def TotStf(df):
     """
-        Take problem's dataframe and return global stiffness matrix.
+    Take problem's dataframe and return global stiffness matrix.
 
-        Parameters
-        ----------
-        df : pandas dataframe
-            Geometry definition of the problem.
+    Parameters
+    ----------
+    df : pandas dataframe
+        Geometry definition of the problem.
 
-        Returns
-        -------
-        K : ndarray
-            Global stiffness matrix.
+    Returns
+    -------
+    K : ndarray
+        Global stiffness matrix.
     """
     nd = max(df['Connectivity'].max())
     K = np.zeros((2*nd, 2*nd))
@@ -173,7 +174,7 @@ def TotStf(df):
 
 def TrussWeight(A, L, density):
     """
-        Calculate truss weight.
+    Calculate truss weight.
 
     Parameters
     ----------
@@ -188,6 +189,5 @@ def TrussWeight(A, L, density):
     -------
     _ : float
         Structure Weight.
-
     """
     return sum([lA*lL*ldensity for lA, lL, ldensity in zip(A, L, density)])

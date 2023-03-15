@@ -43,7 +43,6 @@ def Run(Coord, ElmCon, A, E, theta, BC, F):
         Nodal displacements, {U}.
     df : pandas dataframe
         Geometry definition of the problem.
-
     """
 
     L = Pre.LenCalc(Coord, ElmCon)
@@ -60,15 +59,18 @@ def Run(Coord, ElmCon, A, E, theta, BC, F):
     return U, df
 # %% [2] Run an example:
 
+
 def validation():
-    
+
     Coord, ElmCon, A, E, BC, F = Inp.Coord, Inp.ElmCon, Inp.A, Inp.E, Inp.BC, Inp.F
     Post.ShowTruss(Coord, ElmCon)
     theta = Pre.angCalc(Coord, ElmCon)
     U, ansdf = Run(Coord, ElmCon, A, E, theta, BC, F)
     Post.ShowDeformedTruss(Coord, ElmCon, U)
-    
+
     return U
+
+
 # %% 10-bar planar truss:
 Coord, ElmCon, E, BC, F = Inp.Coord, Inp.ElmCon, Inp.E, Inp.BC, Inp.F
 theta = Pre.angCalc(Coord, ElmCon)
@@ -116,6 +118,7 @@ print(A[np.argsort(list(map(abs, GA.fitCal(Weight, A))))][:3])
 print(np.sort(list(map(abs, GA.fitCal(Weight, A))))[0:3])
 
 
-Post.ShowTrussCross(Coord, ElmCon, A[np.argsort(list(map(abs, GA.fitCal(Weight, A))))][0])
+Post.ShowTrussCross(Coord, ElmCon, A[np.argsort(
+    list(map(abs, GA.fitCal(Weight, A))))][0])
 plt.figure()
 plt.plot(fitlist)
