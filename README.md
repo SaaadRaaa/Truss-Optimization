@@ -36,7 +36,7 @@ The program takes the following inputs:
 * Element connectivity
 * Load conditions (magnitude and direction)
 * Support/Boundary conditions
-* Element properties (density and elastic modulus)
+* Element properties (density, cross-section area and elastic modulus)
 
 ### Outputs
 The program outputs the following:
