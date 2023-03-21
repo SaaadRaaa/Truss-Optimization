@@ -9,7 +9,7 @@ This repository contains a Python program that optimizes truss designs for minim
 * Inputs
 * Outputs
 
-### Installation
+## Installation
 To use this program, you will need to have Python 3 installed on your computer. You can download Python from the official website: https://www.python.org/downloads/
 
 Once you have Python installed, you can clone this repository to your computer using Git:
@@ -18,7 +18,7 @@ Once you have Python installed, you can clone this repository to your computer u
 git clone https://github.com/SaaadRaaa/Truss-Optimization.git
 ```
 
-### Usage
+## Usage
 To run the program, navigate to the directory where the repository is located and run the following command:
 
 ```terminal
@@ -29,7 +29,7 @@ The program will prompt you to enter the number of nodes and the number of membe
 
 The program will then use genetic algorithms to optimize the truss design for minimum weight, subject to the given constraints.
 
-### Inputs
+## Inputs
 The program takes the following inputs:
 
 * Node coordinates
@@ -38,7 +38,7 @@ The program takes the following inputs:
 * Support/Boundary conditions
 * Element properties (density, cross-section area and elastic modulus)
 
-### Outputs
+## Outputs
 The program outputs the following:
 
 * Optimal truss design (member cross-section areas)
