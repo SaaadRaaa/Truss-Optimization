@@ -1,7 +1,7 @@
 # Truss-Optimization
 Analysis and Optimization of Truss Structures using Genetic Algorithms
 
-This repository contains a Python program that optimizes truss designs for minimum weight. The program uses a genetic algorithm to find the best truss design given a set of constraints.
+This repository contains a Python program that optimizes truss designs for minimum weight. The program uses genetic algorithms to find the best truss design given a set of constraints.
 
 ## Table of Contents
 * Installation
